@@ -10,7 +10,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'assets')));
 
 const server = http.createServer(app);
-let schrodingerLogic = false;
+let schrodingerLogic = true;
 
 const globalStyles = `
     html, body {
