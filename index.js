@@ -5,7 +5,7 @@ class HomePage extends Component {
         return (
             <div style={styles.container}>
                 <img src="/img/dogeggs.png" alt="Dog Eggs" style={styles.image} />
-                <h4 style={styles.header}>Oops! You found Dog Eggs</h4>
+                <h4 style={styles.header}>Congrats! You found Dog Eggs</h4>
                 <p style={styles.paragraph}>Keep them a secret.</p>
             </div>
         );
