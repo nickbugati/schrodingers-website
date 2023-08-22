@@ -1,0 +1,32 @@
+# Node dependencies
+node_modules/
+
+# Optionally, you might also want to ignore some other common files/folders:
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.log
+
+# Directory used by npm for cache
+.npm
+
+# Directory used by npm for lock files
+npm-debug.log
+
+# Ignore the `dist` directory if you're compiling/transpiling your code
+#dist/
+
+# Ignore environment variables
+.env
+
+# Editor folders and files
+.idea/
+.vscode/
+*.sublime-workspace
