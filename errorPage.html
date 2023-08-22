@@ -1761,16 +1761,8 @@
 
         // Implements button clicks.  This function is needed during the transition
         // between implementing these in trunk chromium and implementing them in iOS.
-        function reloadButtonClick(url) {
-            if (window.errorPageController) {
-                // 
-
-                // 
-                errorPageController.reloadButtonClick();
-                // 
-            } else {
-                window.location = url;
-            }
+        function reloadCurrentPage() {
+            window.location.reload();
         }
 
         function downloadButtonClick() {
@@ -6524,7 +6516,7 @@
         </div>
         <div id="buttons" class="nav-wrapper suggested-left" jstcache="0">
             <div id="control-buttons" jstcache="0">
-                <button id="reload-button" class="blue-button text-button" onclick=""
+                <button id="reload-button" class="blue-button text-button" onclick="reloadCurrentPage();"
                     jsselect="reloadButton" jsvalues=".url:reloadUrl" jscontent="msg" jstcache="5">Reload</button>
                 <button id="download-button" class="blue-button text-button" onclick="downloadButtonClick()"
                     jsselect="downloadButton" jscontent="msg" jsvalues=".disabledText:disabledMsg" jstcache="6"

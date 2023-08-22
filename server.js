@@ -14,26 +14,11 @@ const io = new Server(server);
 
 app.use(express.static(path.join(__dirname, 'assets')));
 
-let hasActiveUsers = false;
-
 // Toggle this variable to control the behavior
-const schrodingerLogic = true;  // Set to 'false' for development to see the home page, 'true' for production use.
+const schrodingerLogic = true;
 
-let activeUserCount = 0;  // New variable to keep track of the number of active users.
-
-io.on('connection', (socket) => {
-    if (schrodingerLogic) {
-        activeUserCount++; // Increment the count of active users.
-        hasActiveUsers = activeUserCount > 0; // If there's at least one user, set 'hasActiveUsers' to true.
-    }
-
-    socket.on('disconnect', () => {
-        if (schrodingerLogic) {
-            activeUserCount--; // Decrement the count of active users on disconnect.
-            hasActiveUsers = activeUserCount > 0; // Recheck the condition.
-        }
-    });
-});
+let isLockdown = false;
+let lockdownTimer;
 
 const globalStyles = `
     html, body {
@@ -44,7 +29,12 @@ const globalStyles = `
 `;
 
 app.get('/', (req, res) => {
-    if (hasActiveUsers && schrodingerLogic) {
+    if (schrodingerLogic) {
+        // Initiate lockdown immediately on request
+        isLockdown = true;
+        console.log("Lockdown initiated.");
+
+        // Serve the error page to everyone including the user who triggered the lockdown
         fs.readFile(path.join(__dirname, 'errorPage.html'), 'utf-8', (err, content) => {
             if (err) {
                 res.status(500).send('Something went wrong!');
@@ -52,7 +42,17 @@ app.get('/', (req, res) => {
             }
             res.send(content);
         });
+
+        // Reset after a certain duration
+        const lockdownDuration = 60000;  // E.g., 1 minute; adjust as needed
+        clearTimeout(lockdownTimer);  // Clear any previous timer to avoid overlaps
+        lockdownTimer = setTimeout(() => {
+            isLockdown = false;
+            console.log("Lockdown expired.");
+        }, lockdownDuration);
+
     } else {
+        // If schrodingerLogic is false, always serve the home page
         const content = renderHomePage();
         const html = `
             <!DOCTYPE html>
@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
             <head>
                 <meta charset="utf-8">
                 <title>Dog Eggs</title>
-                <style>${globalStyles}</style>  <!-- Inserted the globalStyles here -->
+                <style>${globalStyles}</style>
             </head>
             <body>
                 <div id="app">${content}</div>
