@@ -6,13 +6,11 @@ const path = require('path');
 const { renderHomePage } = require('./renderer');
 
 const PORT = 3000;
-
 const app = express();
 app.use(express.static(path.join(__dirname, 'assets')));
 
 const server = http.createServer(app);
-
-let schrodingerLogic = true;
+let schrodingerLogic = false;
 
 const globalStyles = `
     html, body {
@@ -22,12 +20,36 @@ const globalStyles = `
     }
 `;
 
+// To store all active connections
+const connections = {};
+
+server.on('connection', (conn) => {
+    const key = `${conn.remoteAddress}:${conn.remotePort}`;
+    connections[key] = conn;
+    conn.on('close', () => {
+        delete connections[key];
+    });
+});
+
 app.get('/', (req, res) => {
     if (schrodingerLogic) {
         console.log('Someone tried to observe the server!');
+
+        // Destroy all active connections
+        for (const key in connections) {
+            connections[key].destroy();
+        }
+
+        // Close the server and set it to restart after 1 minute
         server.close(() => {
             console.log('Server is now offline.');
+            setTimeout(() => {
+                server.listen(PORT, () => {
+                    console.log(`Server is running on http://localhost:${PORT}`);
+                });
+            }, 60000);  // 1 minute
         });
+
     } else {
         const content = renderHomePage();
         const html = `
@@ -36,7 +58,7 @@ app.get('/', (req, res) => {
             <head>
                 <meta charset="utf-8">
                 <title>Dog Eggs</title>
-                <style>${globalStyles}</style>  <!-- Inserted the globalStyles here -->
+                <style>${globalStyles}</style>
             </head>
             <body>
                 <div id="app">${content}</div>
@@ -46,15 +68,6 @@ app.get('/', (req, res) => {
 
         res.send(html);
     }
-});
-
-server.on('close', () => {
-    setTimeout(() => {
-        console.log('Restarting the server...');
-        server.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
-        });
-    }, 5000);
 });
 
 server.listen(PORT, () => {
