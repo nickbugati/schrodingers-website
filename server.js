@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'assets')));
 let hasActiveUsers = false;
 
 // Toggle this variable to control the behavior
-const schrodingerLogic = false;  // Set to 'false' for development to see the home page, 'true' for production use.
+const schrodingerLogic = true;  // Set to 'false' for development to see the home page, 'true' for production use.
 
 let activeUserCount = 0;  // New variable to keep track of the number of active users.
 
