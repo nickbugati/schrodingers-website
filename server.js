@@ -3,17 +3,17 @@ require('@babel/register');
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const fs = require('fs');
 const { renderHomePage } = require('./renderer');
+const fs = require('fs');
 
 const PORT = 3000;
 const app = express();
-const server = http.createServer(app);
-
 app.use(express.static(path.join(__dirname, 'assets')));
 
+const server = http.createServer(app);
+
 // Toggle this variable to control the behavior
-const schrodingerLogic = true;
+let schrodingerLogic = true;
 
 let isLockdown = false;
 let lockdownTimer;
