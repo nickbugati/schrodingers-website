@@ -7,6 +7,7 @@ const { renderHomePage } = require('./renderer');
 
 const PORT = 3000;
 const app = express();
+
 app.use(express.static(path.join(__dirname, 'assets')));
 
 const server = http.createServer(app);
