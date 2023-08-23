@@ -49,7 +49,6 @@ app.get('/', (req, res) => {
             isLockdown = false;
             console.log("Lockdown expired.");
         }, lockdownDuration);
-
     } else {
         // If schrodingerLogic is false, always serve the home page
         const content = renderHomePage();
