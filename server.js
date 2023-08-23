@@ -62,10 +62,6 @@ app.get('/', (req, res) => {
             </head>
             <body>
                 <div id="app">${content}</div>
-                <script src="/socket.io/socket.io.js"></script>
-                <script>
-                    const socket = io.connect('http://localhost:${PORT}');
-                </script>
             </body>
             </html>
         `;
