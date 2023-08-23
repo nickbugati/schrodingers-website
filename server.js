@@ -52,7 +52,6 @@ app.get('/', (req, res) => {
                 });
             }, 60000);  // 1 minute
         });
-
     } else {
         const content = renderHomePage();
         const html = `
