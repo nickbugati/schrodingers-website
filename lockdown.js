@@ -1,4 +1,4 @@
-const schrodingerLogic = true; 
+const schrodingerLogic = true;
 const lockdownDuration = 60000; // 1 minute
 const lockdownEnd = localStorage.getItem('lockdownEnd');
 
@@ -15,9 +15,12 @@ if (schrodingerLogic) {
         } else {
             // Lockdown ended
             localStorage.removeItem('lockdownEnd');
+            document.body.style.display = 'block';  // show the homepage content
         }
     } else {
         // No lockdown initiated yet, let's start one
         initiateLockdown();
     }
+} else {
+    document.body.style.display = 'block';  // show the homepage content
 }
