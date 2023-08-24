@@ -1,4 +1,4 @@
-const schrodingerLogic = false; // Set to true for production, false for development
+const schrodingerLogic = true; // Set to true for production, false for development
 let lockdownDuration = 60000; // 1 minute
 
 if (!schrodingerLogic) {
