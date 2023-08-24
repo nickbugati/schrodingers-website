@@ -1,26 +1,34 @@
-const schrodingerLogic = true;
-const lockdownDuration = 60000; // 1 minute
-const lockdownEnd = localStorage.getItem('lockdownEnd');
+const schrodingerLogic = true; // Set to true for production, false for development
+let lockdownDuration = 60000; // 1 minute
+
+if (!schrodingerLogic) {
+    lockdownDuration = 0; // Bypass the lockdown for development purposes
+}
+
+const lockdownEnd = Number(localStorage.getItem('lockdownEnd'));
+
+console.log("Schrodinger Logic: ", schrodingerLogic);
+console.log("Lockdown Duration: ", lockdownDuration);
+console.log("Lockdown End from localStorage: ", lockdownEnd);
 
 function initiateLockdown() {
     localStorage.setItem('lockdownEnd', Date.now() + lockdownDuration);
-    window.location.href = 'errorPage.html';
+    window.location.reload(); // Refresh the page to reflect the new state
 }
 
-if (schrodingerLogic) {
-    if (lockdownEnd) {
-        if (Date.now() < lockdownEnd) {
-            // Still in lockdown
-            window.location.href = 'errorPage.html';
-        } else {
-            // Lockdown ended
-            localStorage.removeItem('lockdownEnd');
-            document.body.style.display = 'block';  // show the homepage content
-        }
-    } else {
-        // No lockdown initiated yet, let's start one
-        initiateLockdown();
-    }
+console.log("Schrodinger Logic: ", schrodingerLogic);
+console.log("Lockdown Duration: ", lockdownDuration);
+
+if (!lockdownEnd) {
+    console.log("No lockdown end detected. Initiating lockdown.");
+    initiateLockdown();
 } else {
-    document.body.style.display = 'block';  // show the homepage content
+    console.log("Existing lockdown end: ", new Date(lockdownEnd * 1));
+
+    if (Date.now() >= lockdownEnd) {
+        console.log("Lockdown expired. Navigating to home.html.");
+        window.location.href = 'home.html';
+    } else {
+        console.log("Lockdown still active. Not navigating.");
+    }
 }
