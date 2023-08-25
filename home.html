@@ -49,6 +49,14 @@
         <h4 class="header">Congrats! You found Dog Eggs</h4>
         <p class="paragraph">Keep them a secret.</p>
     </div>
+    <script>
+        const lockdownEnd = Number(localStorage.getItem('lockdownEnd'));
+        if (!lockdownEnd || Date.now() < lockdownEnd) {
+            // If lockdownEnd doesn't exist or if the current time is before the lockdownEnd time, redirect to index.html
+            window.location.href = '/';
+        }
+    </script>
+
 </body>
 
 </html>
